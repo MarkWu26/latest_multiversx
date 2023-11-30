@@ -70,6 +70,10 @@ module.exports = {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
+      screens: {
+        'custom': '424px',
+        'mobile' : '430px' // You can adjust the pixel value as needed
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],

@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { LoginComponent } from './login-component';
 import { useEffectOnlyOnUpdate } from '@/hooks/use-effect-only-on-update';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
 interface LoginModalButtonProps {
   onClose?: () => void;
@@ -34,13 +35,25 @@ export const LoginModalButton: FC<LoginModalButtonProps> = ({
 
   const { logout } = useLogout();
 
-  const handleLogout = () => {
-    console.log('loggin you out')
-    logout();
-    if (setIsStepTwo) {
-      setIsStepTwo(false);
+  const handleLogout = async () => {
+  
+    try {
+      const response = await axios.get('http://194.163.142.234:3001/api/logout', {
+        withCredentials: true
+      })
+      console.log(response)
+      logout();
+      if (setIsStepTwo) {
+        setIsStepTwo(false);
+      }
+      router.push('/')
+    } catch (error) {
+      console.log(error)
+      console.error(error)
     }
-    router.push('/')
+     
+    
+   
   }
 
 

@@ -2,7 +2,6 @@
 
 import type { NextPage } from 'next';
 /* import { SimpleDemo } from '@/components/demo/simple-demo';
-
 import { GetLoggingInStateDemo } from '@/components/demo/get-logging-in-state-demo';
 import { GetLoginInfoDemo } from '@/components/demo/get-login-info-demo';*/
 import { Authenticated } from '@/components/elven-ui/authenticated'; 
@@ -17,6 +16,7 @@ import { IoHeartSharp } from "react-icons/io5";
 import { GoLink } from "react-icons/go";
 import { useLogin,/*  useLogout */ } from '@useelven/core';
 import CustomProgressBar from '@/components/ui/Progress-bar';
+import { useRouter } from 'next/navigation';
 
 
 const Home: NextPage = () => {
@@ -24,17 +24,16 @@ const Home: NextPage = () => {
 const [isStepTwo, setIsStepTwo] = useState(false)
 const [url, setUrl] = useState(null)
 const { isLoggedIn } = useLogin();
-console.log('logged in: ', isLoggedIn)
-console.log('step2?', isStepTwo)
+const router = useRouter();
+
 
 
 useEffect(()=>{
   const getUrl = async() => {
     try {
-      const url = await axios.get('http://localhost:3001/', {
+      const url = await axios.get('http://194.163.142.234:3001', {
         withCredentials: true
       })  
-      console.log('the url is: ', url.data.link)
       setUrl(url.data.link)
     } catch (error) {
       console.error(error)
@@ -55,7 +54,23 @@ useEffect(() => {
     const successParam = urlParams.get('success');
 
     if (successParam === 'true') {
-      setIsStepTwo(true);
+      const checkCookie = async () => {
+        try {
+          const response = await axios.get('http://194.163.142.234:3001/checkCookie', {
+            withCredentials: true
+          })  
+          console.log(response.data)
+          if(response.data.success){
+            setIsStepTwo(true);
+          } else{
+            router.push('/');
+          }
+     
+        } catch (error) {
+          console.error(error)
+        }    
+      }
+      checkCookie();
     }
     
     setHasEffectRun(true);
@@ -63,15 +78,16 @@ useEffect(() => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
 }, []); // Run this effect once when the component mounts
 
-const progressValue = isStepTwo ? (isLoggedIn ? 100 : 50) : 0;
+const progressValue = isStepTwo ? (isLoggedIn ? 100 : 49) : 0;
+
 console.log(progressValue)
 
   return (
     <>
      <>
-    <div className="w-full h-full flex  items-center justify-center overflow-hidden ">
+    <div className="w-full h-full flex items-center justify-center overflow-hidden ">
  
-      <Card className="mb-4 mt-32 w-[600px] py-5 flex items-center justify-center shadow-2xl">
+      <Card className="mb-4 w-[600px] py-5 flex items-center justify-center shadow-2xl">
         <CardContent className=" mb-4 flex-col items-center justify-center w-full">
           <div className='text-center items-center justify-center mb-5 mt-10 text-[18px]  sm:text-[20px] md:text-[20px] lg:text-[24px] font-medium'>
             <span className='flex gap-x-2 ml-3 items-center justify-center'><GoLink/> Link your accounts.</span>
@@ -82,8 +98,8 @@ console.log(progressValue)
         </div>
 
 
-          <div className="mb-12 w-full justify-center px-16 ">
-          <CustomProgressBar progressValue={progressValue} isStepTwo={isStepTwo} isLoggedIn={isLoggedIn}/>
+          <div className="mb-12 w-full justify-center px-10 sm:px-16 flex flex-col custom:px-16">
+          <CustomProgressBar progressValue={progressValue} isStepTwo={isStepTwo}/>
           </div>
 
           {isLoggedIn && (
@@ -105,7 +121,7 @@ console.log(progressValue)
         </CardContent>
       </Card>
      
-      <a className='flex justify-center items-center w-full bottom-5 absolute cursor-pointer'
+      <a className='flex justify-center items-center w-full bottom-1 absolute cursor-pointer'
       href='https://twitter.com/MultiversX' target="_blank"
       >
         <span className="flex items-center gap-x-1 border-b border-b-gray-300 sm:text-[10px] text-[8px] lg:text-[0.75rem] font-normal"> Made with <IoHeartSharp/> by Lucky Birds Labs</span>

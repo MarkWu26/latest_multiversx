@@ -143,7 +143,7 @@ export const LoginComponent: React.FC<LoginComponentProps> = memo(({setIsOpen}) 
       <DialogContent className="max-w-lg sm:max-w-lg bg-white dark:bg-zinc-950 p-0 flex items-center justify-center flex-col">
         <div className="px-[60px] pt-12 flex justify-center items-start">
        
-          <FaLock className="text-[#23F7DD] items-center mt-[1px] absolute text-[12px] py-0 px-0 left-[85px]"/>
+          <FaLock className="text-[#23F7DD] items-center mt-[1px] absolute text-[12px] py-0 px-0 left-[46px] sm:left-[85px]"/>
          
        
             <span className='text-[12px] text-center items-center flex-row text-gray-300'>

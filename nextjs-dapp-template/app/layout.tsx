@@ -49,19 +49,19 @@ export default function RootLayout({
   };
   return (
     <html lang="en">
-      <body className={inter.className} style={bodyStyle}>
+      <body className={`${inter.className} h-screen`} style={bodyStyle}>
         <ElvenInit />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="container mx-auto">
-            <div className="w-full flex items-center justify-between flex-wrap gap-2 py-9 flex-col lg:flex-row">
+          <div className="">
+            <div className="">
               
-              <div className="flex items-center gap-5">
+              <div className="">
               
 
               </div>
             </div>
           </div>
-          <div className="container mx-auto min-h-[calc(100vh-280px)] lg:min-h-[calc(100vh-235px)]">
+          <div className="container mx-auto h-screen">
             {children}
           </div>
         

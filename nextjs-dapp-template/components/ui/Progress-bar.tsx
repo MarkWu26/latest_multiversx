@@ -9,11 +9,10 @@ import { InlineIcon } from '@iconify/react';
 interface CustomProgressBarProps {
     progressValue : number;
     isStepTwo: boolean;
-    isLoggedIn: boolean;
 
 }
 
-const CustomProgressBar: React.FC<CustomProgressBarProps> = ({progressValue, isStepTwo, isLoggedIn}) => {
+const CustomProgressBar: React.FC<CustomProgressBarProps> = ({progressValue, isStepTwo, }) => {
     console.log('the progress value is:', progressValue)
   return (
     <ProgressBar percent={progressValue}>
@@ -26,6 +25,7 @@ const CustomProgressBar: React.FC<CustomProgressBarProps> = ({progressValue, isS
             alt="Discord"
             width={50}
             height={50}
+            className='w-[36px] sm:w-[50px]'
           />
         </div>
         <div className={`indexedStep ${accomplished ? 'accomplished' : null}`}>
@@ -45,17 +45,18 @@ const CustomProgressBar: React.FC<CustomProgressBarProps> = ({progressValue, isS
       <Step>
         {({ accomplished, /* index */ }) => (
          
-          <div className={`flex items-center flex-col ${accomplished ? 'gap-y-2' : 'gap-y-4'}`}>
+          <div className={`flex items-center flex-col ${accomplished ? 'gap-y-2' : 'gap-y-5'}`}>
           <div className={`${accomplished ? 'mt-[-52px]' : 'mt-[-62px]'}`}>
           <Image
               src={`/x-white.png`}
               alt={`MultiversX`}
               width={50} // set the width according to your design
               height={50} // set the height according to your design
+              className='w-[38px] sm:w-[50px]'
             />
           </div>
           <div className={`indexedStep ${accomplished ? 'accomplished' : null}`}>
-          {(!isLoggedIn && isStepTwo) || accomplished ? (
+          {accomplished ? (
           <span className=' '>
             <InlineIcon className="rounded-[50%] items-center justify-center bg-red-300 text-[38px]" icon="bx:bx-check" />{' '}
           </span>
@@ -72,7 +73,7 @@ const CustomProgressBar: React.FC<CustomProgressBarProps> = ({progressValue, isS
         {({ accomplished, /* index */ }) => (
            <div className={`flex items-center flex-col ${accomplished ? 'gap-y-3' : 'gap-y-6'}`}>
            <div className={`${accomplished ? 'mt-[-54px]' : 'mt-[-62px]'}`}>
-                <BsDatabaseFillCheck className="text-[45px]"/>
+                <BsDatabaseFillCheck className="sm:text-[45px] text-[38px]"/>
            </div>
            <div className={`indexedStep ${accomplished ? 'accomplished' : null}`}>
            {accomplished ? (

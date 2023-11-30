@@ -5,12 +5,9 @@ import axios from 'axios'
 import { WalletProvider } from './WalletProvider.js';
 import { WalletConnectV2Provider } from '@multiversx/sdk-wallet-connect-provider';
 const provider = new WalletProvider('https://devnet-wallet.multiversx.com/dapp/init');
-import  QRCode  from 'qrcode';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import User from './model/users.js';
-import session from 'express-session';
-import MongoStore from 'connect-mongo';
 import cookieParser from 'cookie-parser';
 
 dotenv.config()
@@ -57,11 +54,11 @@ qrProvider.init();
 
 
 
-const CLIENT_ID = '1178690541651755081'
-const CLIENT_SECRET = 'rN4jRPC277WyWbogsTFkWRrxFFoOGGhr'
-const REDIRECT_URI = ''
+const CLIENT_ID = ''
+const CLIENT_SECRET = ''
+const REDIRECT_URI = 'http://194.163.142.234'
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: 'http://194.163.142.234',
     credentials: true,  // Cookies!!!!!!!!!!!!!!!! 
   };
 
@@ -74,7 +71,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 const PORT = 3001;
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000'); // Replace with your client's origin
+  res.header('Access-Control-Allow-Origin', 'http://194.163.142.234'); // Replace with your client's origin
   res.header('Access-Control-Allow-Credentials', true);
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
@@ -87,13 +84,16 @@ app.get('/', async(req,res)=>{
 
 app.get('/auth/discord', async(req,res)=>{
     const code=req.query.code;
+    if(req.query.error){
+      return res.redirect('http://194.163.142.234');
+    }
     const params = new URLSearchParams();
     let user;
     params.append('client_id', CLIENT_ID);
     params.append('client_secret', CLIENT_SECRET);
     params.append('grant_type', 'authorization_code');
     params.append('code', code);
-    params.append('redirect_uri', "http://localhost:3001/auth/discord");
+    params.append('redirect_uri', "http://194.163.142.234:3001/auth/discord");
     try{
         const response=await axios.post('https://discord.com/api/oauth2/token',params)
         const { access_token,token_type}=response.data;
@@ -114,7 +114,7 @@ app.get('/auth/discord', async(req,res)=>{
 
         }
 
-       res.cookie('discord', discordId).redirect('http://localhost:3000/?success=true')
+       res.cookie('discord', discordId).redirect('http://194.163.142.234/?success=true')
        
     }catch(error){
         console.log('Error',error)
@@ -122,8 +122,22 @@ app.get('/auth/discord', async(req,res)=>{
     }
 })
 
+app.get('/checkCookie', async (req,res)=>{
+  try {
+    if(req.cookies?.discord){
+      console.log('discord authenticated')
+      res.status(200).json({success:true})
+    }else{
+      console.log('not authenticated with discord')
+      res.status(200).json({success:false})
+    }
+  } catch (error) {
+    console.error(error)
+  }
+})
+
 app.get('/login', async (req, res) => {
-    const callbackUrl = encodeURIComponent('http://localhost:3000/?success=true');
+    const callbackUrl = encodeURIComponent('http://194.163.142.234/?success=true');
 
     try {
         const redirectUrl = await provider.login(res, { callbackUrl});
@@ -225,14 +239,18 @@ app.get("/open-qr", async (req, res) => {
 
   })
 
-  app.get('/logout', async(req, res)=> {
+  app.get('/api/logout', (req, res)=> {
     try {
-      const discordID = req.cookies?.discord;
-      res.clearCookie(discordID)
+   res.clearCookie('discord', { domain: 'localhost', path: '/'}).status(200).send('Logged out successfully'); //change the path 
     } catch (error) {
       console.error(error)
     }
   })
+
+  app.get('*', (req, res) => {
+    // Redirect to a specific route or handle as needed
+    res.redirect('http://194.163.142.234');
+  });
 
   mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,

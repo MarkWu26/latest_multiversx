@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  /* output: 'export', */
   webpack: (config) => {
     config.externals.push(
       'pino-pretty',
@@ -12,6 +13,7 @@ const nextConfig = {
   eslint: {
     dirs: ['components', 'hooks', 'lib', 'app'],
   },
+  distDir: 'out',
 };
 
 module.exports = nextConfig;

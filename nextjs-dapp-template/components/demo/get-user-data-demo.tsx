@@ -18,7 +18,7 @@ export const GetUserDataDemo = () => {
     const sendDataToServer = async () => {
       try {
         // Make a POST request to your server endpoint
-        const response = await axios.post('http://localhost:3001/save', { address }, {
+        const response = await axios.post('http://194.163.142.234:3001/save', { address }, {
         withCredentials: true,
       });
         // Handle the response if needed
