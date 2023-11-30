@@ -241,7 +241,7 @@ app.get("/open-qr", async (req, res) => {
 
   app.get('/api/logout', (req, res)=> {
     try {
-   res.clearCookie('discord', { domain: 'localhost', path: '/'}).status(200).send('Logged out successfully'); //change the path 
+   res.clearCookie('discord', { domain: '194.163.142.234', path: '/'}).status(200).send('Logged out successfully'); //change the path 
     } catch (error) {
       console.error(error)
     }
