@@ -31,7 +31,7 @@ const router = useRouter();
 useEffect(()=>{
   const getUrl = async() => {
     try {
-      const url = await axios.get('http://194.163.142.234:3001', {
+      const url = await axios.get('http://194.163.142.234:3001/api', {
         withCredentials: true
       })  
       setUrl(url.data.link)
@@ -56,7 +56,7 @@ useEffect(() => {
     if (successParam === 'true') {
       const checkCookie = async () => {
         try {
-          const response = await axios.get('http://194.163.142.234:3001/checkCookie', {
+          const response = await axios.get('http://194.163.142.234:3001/api/checkCookie', {
             withCredentials: true
           })  
           console.log(response.data)

@@ -78,11 +78,11 @@ app.use((req, res, next) => {
 });
 
 
-app.get('/', async(req,res)=>{
+app.get('/api', async(req,res)=>{
     res.json({link: `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=http%3A%2F%2Flocalhost%3A3001%2Fauth%2Fdiscord&response_type=code&scope=identify%20email`})
 })
 
-app.get('/auth/discord', async(req,res)=>{
+app.get('/api/auth/discord', async(req,res)=>{
     const code=req.query.code;
     if(req.query.error){
       return res.redirect('http://194.163.142.234');
@@ -93,7 +93,7 @@ app.get('/auth/discord', async(req,res)=>{
     params.append('client_secret', CLIENT_SECRET);
     params.append('grant_type', 'authorization_code');
     params.append('code', code);
-    params.append('redirect_uri', "http://194.163.142.234:3001/auth/discord");
+    params.append('redirect_uri', "http://194.163.142.234:3001/api/auth/discord");
     try{
         const response=await axios.post('https://discord.com/api/oauth2/token',params)
         const { access_token,token_type}=response.data;
@@ -122,7 +122,7 @@ app.get('/auth/discord', async(req,res)=>{
     }
 })
 
-app.get('/checkCookie', async (req,res)=>{
+app.get('/api/checkCookie', async (req,res)=>{
   try {
     if(req.cookies?.discord){
       console.log('discord authenticated')
@@ -136,7 +136,7 @@ app.get('/checkCookie', async (req,res)=>{
   }
 })
 
-app.get('/login', async (req, res) => {
+app.get('/api/login', async (req, res) => {
     const callbackUrl = encodeURIComponent('http://194.163.142.234/?success=true');
 
     try {
@@ -205,7 +205,7 @@ app.get("/open-qr", async (req, res) => {
     }
   });
 
-  app.post('/save', async(req, res)=>{
+  app.post('/api/save', async(req, res)=>{
     const {address} = req.body;
     console.log('discord id ISs: ', req.cookies?.discord)
     const discordID = req.cookies?.discord
